@@ -7,6 +7,7 @@
     <title>IPL Ticket Booking</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
     <header>
@@ -19,34 +20,37 @@
 
     <main>
         <h2>IPL Ticket Booking Form</h2>
+
         <p>Book your tickets and experience the stadium energy live!</p>
 
-        <form action="booking.html" method="get">
+        <form id="bookingForm" action="#" method="get">
 
-            <label>Full Name:</label>
-            <input type="text" name="name"
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name"
                    placeholder="Enter your name"
-                   minlength="3" maxlength="30" required>
+                   minlength="3" maxlength="30"
+                   required>
 
             <br><br>
 
-            <label>Email Address:</label>
-            <input type="email" name="email"
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email"
                    placeholder="Enter your email"
                    required>
 
             <br><br>
 
-            <label>Phone Number:</label>
-            <input type="tel" name="phone"
-                   placeholder="10 digit phone number"
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone"
+                   placeholder="Enter 10 digit phone number"
                    pattern="[0-9]{10}"
-                   maxlength="10" required>
+                   maxlength="10"
+                   required>
 
             <br><br>
 
-            <label>Select Match:</label>
-            <select name="match" required>
+            <label for="match">Select Match:</label>
+            <select id="match" name="match" required>
                 <option value="">-- Select Match --</option>
                 <option value="RCB vs CSK">RCB vs CSK</option>
                 <option value="MI vs KKR">MI vs KKR</option>
@@ -56,8 +60,8 @@
 
             <br><br>
 
-            <label>Stand Category:</label>
-            <select name="stand" required>
+            <label for="stand">Stand Category:</label>
+            <select id="stand" name="stand" required>
                 <option value="">-- Select Stand --</option>
                 <option value="General">General</option>
                 <option value="Premium">Premium</option>
@@ -66,29 +70,35 @@
 
             <br><br>
 
-            <label>Number of Tickets:</label>
-            <input type="number" name="tickets"
+            <label for="tickets">Number of Tickets:</label>
+            <input type="number" id="tickets" name="tickets"
                    min="1" max="10"
                    placeholder="Enter ticket quantity"
                    required>
 
             <br><br>
 
-            <label>Booking Preference:</label><br>
+            <label>Booking Preference:</label>
+            <br>
 
-            <input type="radio" name="preference"
+            <input type="radio" id="online"
+                   name="preference"
                    value="Online Payment" required>
-            Online Payment
+            <label for="online">Online Payment</label>
 
-            <input type="radio" name="preference"
+            <input type="radio" id="counter"
+                   name="preference"
                    value="Pay at Counter">
-            Pay at Counter
+            <label for="counter">Pay at Counter</label>
 
             <br><br>
 
-            <input type="checkbox" name="terms"
+            <input type="checkbox" id="terms"
+                   name="terms"
                    value="accepted" required>
-            I agree to the booking terms and conditions.
+            <label for="terms">
+                I agree to the booking terms and conditions.
+            </label>
 
             <br><br>
 
@@ -96,7 +106,45 @@
             <button type="reset">Reset</button>
 
         </form>
+
+        <p id="message"></p>
+
     </main>
+
+    <script>
+
+        const form = document.getElementById("bookingForm");
+        const message = document.getElementById("message");
+
+        form.addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            message.style.color = "red";
+
+            if (!form.checkValidity()) {
+
+                form.reportValidity();
+
+                message.textContent =
+                    "Please enter all details correctly!";
+
+            } else {
+
+                message.style.color = "green";
+
+                message.textContent =
+                    "Your booking details are valid!";
+
+            }
+
+        });
+
+        form.addEventListener("reset", function() {
+            message.textContent = "";
+        });
+
+    </script>
 
 </body>
 </html>
