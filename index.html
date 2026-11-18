@@ -4,299 +4,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPL 2026 - Ticket Booking</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>IPL Ticket Booking</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Navigation Bar -->
     <header>
-        <nav>
-            <h2>IPL 2026</h2>
-
-            <div class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#about">About</a>
-                <a href="#matches">Matches</a>
-                <a href="booking.html">Book Ticket</a>
-                <a href="#guidelines">Guidelines</a>
-            </div>
-        </nav>
+        <h1>🏏 IPL Ticket Booking</h1>
+        <p>Book your favourite IPL match tickets!</p>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <h1>IPL 2026 Ticket Booking</h1>
+    <main class="container">
 
-        <h2>Experience The Stadium Energy Live!</h2>
+        <section class="booking-card">
+            <h2>Book Your Tickets</h2>
 
-        <p>
-            Watch your favourite teams and enjoy the excitement
-            of Indian Premier League cricket.
-        </p>
+            <label for="match">Select Match</label>
+            <select id="match">
+                <option value="RCB vs CSK">RCB vs CSK</option>
+                <option value="MI vs KKR">MI vs KKR</option>
+                <option value="SRH vs RR">SRH vs RR</option>
+                <option value="GT vs PBKS">GT vs PBKS</option>
+            </select>
 
-        <a href="#matches" class="btn">View Schedule</a>
+            <label for="stand">Select Stand Category</label>
+            <select id="stand">
+                <option value="500">General - ₹500</option>
+                <option value="1000">Premium - ₹1000</option>
+                <option value="2000">VIP - ₹2000</option>
+            </select>
 
-        <a href="booking.html" class="btn">Book Ticket</a>
-    </section>
+            <label for="quantity">Number of Tickets</label>
+            <input
+                type="number"
+                id="quantity"
+                min="1"
+                max="10"
+                value="1"
+            >
 
-    <!-- About Section -->
-    <section class="about" id="about">
-        <h2>About IPL 2026</h2>
+            <button type="button" id="bookBtn">Confirm Booking</button>
+        </section>
 
-        <p>
-            Indian Premier League is one of the most exciting
-            cricket tournaments in the world. Enjoy thrilling
-            matches, amazing performances and unforgettable
-            stadium experiences.
-        </p>
+        <section class="summary-card">
+            <h2>Booking Summary</h2>
 
-        <h3>Popular IPL Teams</h3>
+            <p><strong>Match:</strong>
+                <span id="summaryMatch">RCB vs CSK</span>
+            </p>
 
-        <div class="team-container">
+            <p><strong>Stand:</strong>
+                <span id="summaryStand">General</span>
+            </p>
 
-            <div class="team-card">
-                <h3>RCB</h3>
-                <p>Royal Challengers Bengaluru</p>
-            </div>
+            <p><strong>Quantity:</strong>
+                <span id="summaryQuantity">1</span>
+            </p>
 
-            <div class="team-card">
-                <h3>CSK</h3>
-                <p>Chennai Super Kings</p>
-            </div>
+            <hr>
 
-            <div class="team-card">
-                <h3>MI</h3>
-                <p>Mumbai Indians</p>
-            </div>
+            <h3>Total Price: ₹<span id="totalPrice">500</span></h3>
+        </section>
 
-            <div class="team-card">
-                <h3>KKR</h3>
-                <p>Kolkata Knight Riders</p>
-            </div>
+    </main>
 
-            <div class="team-card">
-                <h3>SRH</h3>
-                <p>Sunrisers Hyderabad</p>
-            </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-            <div class="team-card">
-                <h3>RR</h3>
-                <p>Rajasthan Royals</p>
-            </div>
-
-        </div>
-
-        <h3>Popular Stadiums</h3>
-
-        <p>
-            M. Chinnaswamy Stadium - Bengaluru
-            <br>
-            MA Chidambaram Stadium - Chennai
-            <br>
-            Wankhede Stadium - Mumbai
-            <br>
-            Eden Gardens - Kolkata
-        </p>
-    </section>
-
-    <!-- Match Schedule -->
-    <section class="matches" id="matches">
-
-        <h2>IPL 2026 Match Schedule</h2>
-
-        <label for="teamFilter">Filter by Team:</label>
-
-        <select id="teamFilter">
-            <option value="all">All Teams</option>
-            <option value="RCB">RCB</option>
-            <option value="CSK">CSK</option>
-            <option value="MI">MI</option>
-            <option value="KKR">KKR</option>
-            <option value="SRH">SRH</option>
-            <option value="RR">RR</option>
-        </select>
-
-        <div class="table-container">
-
-            <table id="matchTable">
-
-                <thead>
-                    <tr>
-                        <th>Match</th>
-                        <th>Teams</th>
-                        <th>Venue</th>
-                        <th>Ticket Price</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    <tr>
-                        <td>Match 1</td>
-                        <td>RCB vs CSK</td>
-                        <td>Bengaluru</td>
-                        <td>
-                            General: ₹800
-                            <br>
-                            Premium: ₹2000
-                            <br>
-                            VIP: ₹5000
-                        </td>
-                        <td>
-                            <a href="booking.html" class="btn">
-                                Book Now
-                            </a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Match 2</td>
-                        <td>MI vs KKR</td>
-                        <td>Mumbai</td>
-                        <td>
-                            General: ₹800
-                            <br>
-                            Premium: ₹2000
-                            <br>
-                            VIP: ₹5000
-                        </td>
-                        <td>
-                            <a href="booking.html" class="btn">
-                                Book Now
-                            </a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Match 3</td>
-                        <td>RCB vs MI</td>
-                        <td>Bengaluru</td>
-                        <td>
-                            General: ₹800
-                            <br>
-                            Premium: ₹2000
-                            <br>
-                            VIP: ₹5000
-                        </td>
-                        <td>
-                            <a href="booking.html" class="btn">
-                                Book Now
-                            </a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Match 4</td>
-                        <td>CSK vs KKR</td>
-                        <td>Chennai</td>
-                        <td>
-                            General: ₹800
-                            <br>
-                            Premium: ₹2000
-                            <br>
-                            VIP: ₹5000
-                        </td>
-                        <td>
-                            <a href="booking.html" class="btn">
-                                Book Now
-                            </a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Match 5</td>
-                        <td>SRH vs RR</td>
-                        <td>Hyderabad</td>
-                        <td>
-                            General: ₹800
-                            <br>
-                            Premium: ₹2000
-                            <br>
-                            VIP: ₹5000
-                        </td>
-                        <td>
-                            <a href="booking.html" class="btn">
-                                Book Now
-                            </a>
-                        </td>
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </section>
-
-    <!-- Booking Section -->
-    <section class="booking" id="booking">
-
-        <h2>Book Your IPL Tickets</h2>
-
-        <p>
-            Don't miss the excitement. Book your favourite
-            match tickets today!
-        </p>
-
-        <a href="booking.html" class="btn">
-            Book Your Tickets
-        </a>
-
-    </section>
-
-    <!-- Guidelines Section -->
-    <section class="guidelines" id="guidelines">
-
-        <h2>Booking Guidelines</h2>
-
-        <ul>
-            <li>Enter your correct personal details.</li>
-            <li>Select your favourite IPL match.</li>
-            <li>Choose your preferred stand category.</li>
-            <li>Select the number of tickets.</li>
-            <li>Check your details before submitting.</li>
-        </ul>
-
-    </section>
-
-    <!-- Footer -->
     <footer>
-        <p>© 2026 IPL Ticket Booking. All Rights Reserved.</p>
-        <p>Experience The Stadium Energy Live!</p>
+        <p>© 2026 IPL Ticket Booking | Activity 7</p>
     </footer>
 
-    <!-- Team Filter JavaScript -->
-    <script>
-        const teamFilter = document.getElementById("teamFilter");
-
-        teamFilter.addEventListener("change", function () {
-
-            const selectedTeam = this.value;
-
-            const rows = document.querySelectorAll(
-                "#matchTable tbody tr"
-            );
-
-            rows.forEach(function (row) {
-
-                const teams = row.cells[1].textContent;
-
-                if (
-                    selectedTeam === "all" ||
-                    teams.includes(selectedTeam)
-                ) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
-
-            });
-
-        });
-    </script>
-
+    <script src="app.js"></script>
 </body>
 </html>
