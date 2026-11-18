@@ -1,77 +1,148 @@
-
-// Select booking form elements using DOM selectors
-const matchSelect = document.getElementById("match");
-const standSelect = document.getElementById("stand");
-const quantityInput = document.getElementById("quantity");
-
-// Select booking summary elements
-const summaryMatch = document.getElementById("summaryMatch");
-const summaryStand = document.getElementById("summaryStand");
-const summaryQuantity = document.getElementById("summaryQuantity");
-const totalPrice = document.getElementById("totalPrice");
-
-// Toast notification function
 function showToast(message) {
-    const toast = document.getElementById("toast");
+
+    let toast = document.getElementById("toast");
+
+    if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "toast";
+        document.body.appendChild(toast);
+    }
 
     toast.textContent = message;
-    toast.style.display = "block";
+    toast.className = "show";
 
     setTimeout(function () {
-        toast.style.display = "none";
-    }, 2000);
+        toast.className = "";
+    }, 3000);
 }
 
-// Function to update booking summary
-function updateSummary() {
 
-    // Read selected values
-    const selectedMatch = matchSelect.value;
+// Wait until the HTML page is completely loaded
+document.addEventListener("DOMContentLoaded", function () {
 
-    const selectedStand =
-        standSelect.options[standSelect.selectedIndex].text;
+    // Smooth scrolling to booking form
+    const bookButtons = document.querySelectorAll(
+        'a[href="#booking"], .book-btn'
+    );
 
-    const ticketPrice = Number(standSelect.value);
+    bookButtons.forEach(function (button) {
 
-    let quantity = Number(quantityInput.value);
+        button.addEventListener("click", function (event) {
 
-    // Validate ticket quantity
-    if (!Number.isInteger(quantity) || quantity < 1) {
-        quantity = 1;
-        quantityInput.value = 1;
+            const bookingForm = document.getElementById("booking");
+
+            if (bookingForm) {
+                event.preventDefault();
+
+                bookingForm.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
+                showToast("Redirecting to booking form!");
+            }
+        });
+    });
+
+
+    // Select form elements using DOM selectors
+    const matchSelect = document.getElementById("match");
+    const categorySelect = document.querySelector("#category");
+    const quantityInput = document.getElementById("quantity");
+
+
+    // Select Booking Summary elements
+    const summaryMatch = document.getElementById("summaryMatch");
+    const summaryCategory = document.getElementById("summaryCategory");
+    const summaryQuantity = document.getElementById("summaryQuantity");
+    const summaryPrice = document.getElementById("summaryPrice");
+    const totalPrice = document.getElementById("totalPrice");
+    const summaryMessage = document.getElementById("summaryMessage");
+
+
+    // Ticket prices for each stand category
+    const ticketPrices = {
+        General: 800,
+        Premium: 1500,
+        VIP: 3000
+    };
+
+
+    // Function to update Booking Summary
+    function updateBookingSummary() {
+
+        const selectedMatch = matchSelect.value;
+        const selectedCategory = categorySelect.value;
+        const quantity = Number(quantityInput.value);
+
+
+        // Check whether all selections are valid
+        if (
+            selectedMatch === "" ||
+            selectedCategory === "" ||
+            !Number.isInteger(quantity) ||
+            quantity < 1 ||
+            quantity > 10
+        ) {
+
+            summaryMessage.textContent =
+                "Please select a match, stand category and valid quantity.";
+
+            return;
+        }
+
+
+        // Calculate ticket price and total price
+        const price = ticketPrices[selectedCategory];
+        const total = price * quantity;
+
+
+        // Display selected details
+        summaryMatch.textContent = selectedMatch;
+        summaryCategory.textContent = selectedCategory;
+        summaryQuantity.textContent = quantity + " Tickets";
+
+        summaryPrice.textContent =
+            "₹" + price.toLocaleString("en-IN");
+
+        totalPrice.textContent =
+            "₹" + total.toLocaleString("en-IN");
+
+
+        summaryMessage.textContent =
+            "Your booking summary has been updated successfully!";
+
+
+        // Display toast notification
+        showToast("Booking Summary Updated Successfully!");
     }
 
-    if (quantity > 10) {
-        quantity = 10;
-        quantityInput.value = 10;
-    }
 
-    // Calculate total ticket price
-    const total = ticketPrice * quantity;
+    // Add change event listeners
+    matchSelect.addEventListener("change", updateBookingSummary);
 
-    // Update booking summary
-    summaryMatch.textContent = selectedMatch;
-    summaryStand.textContent = selectedStand.split(" - ")[0];
-    summaryQuantity.textContent = quantity;
-    totalPrice.textContent = total.toLocaleString("en-IN");
+    categorySelect.addEventListener("change", updateBookingSummary);
 
-    // Show confirmation message
-    showToast("Booking summary updated!");
-}
+    quantityInput.addEventListener("change", updateBookingSummary);
 
-// Add change event listeners
-matchSelect.addEventListener("change", updateSummary);
-standSelect.addEventListener("change", updateSummary);
-quantityInput.addEventListener("change", updateSummary);
 
-// Also update immediately while typing quantity
-quantityInput.addEventListener("input", updateSummary);
+    // Also update immediately while typing quantity
+    quantityInput.addEventListener("input", updateBookingSummary);
 
-// Confirm booking button
-document.getElementById("bookBtn").addEventListener("click", function () {
-    updateSummary();
-    showToast("Booking details confirmed!");
+
+    // Handle form submission
+    const bookingForm = document.getElementById("bookingForm");
+
+    bookingForm.addEventListener("submit", function (event) {
+
+        event.preventDefault();
+
+        updateBookingSummary();
+
+        if (bookingForm.checkValidity()) {
+            showToast("Booking Details Submitted Successfully!");
+        }
+
+    });
+
 });
-
-// Display initial booking summary
-updateSummary();
