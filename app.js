@@ -1,3 +1,4 @@
+
 function showToast(message) {
 
     let toast = document.getElementById("toast");
@@ -17,10 +18,10 @@ function showToast(message) {
 }
 
 
-// Wait until the HTML page is completely loaded
+// Wait until HTML page is loaded
 document.addEventListener("DOMContentLoaded", function () {
 
-    // Smooth scrolling to booking form
+    // Smooth scrolling
     const bookButtons = document.querySelectorAll(
         'a[href="#booking"], .book-btn'
     );
@@ -29,12 +30,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         button.addEventListener("click", function (event) {
 
-            const bookingForm = document.getElementById("booking");
+            const bookingSection = document.getElementById("booking");
 
-            if (bookingForm) {
+            if (bookingSection) {
                 event.preventDefault();
 
-                bookingForm.scrollIntoView({
+                bookingSection.scrollIntoView({
                     behavior: "smooth",
                     block: "start"
                 });
@@ -45,13 +46,91 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    // Select form elements using DOM selectors
+    // ACTIVITY 8 - Hamburger Menu
+
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("navLinks");
+
+    menuToggle.addEventListener("click", function () {
+
+        navLinks.classList.toggle("active");
+
+        const isOpen = navLinks.classList.contains("active");
+        menuToggle.setAttribute("aria-expanded", isOpen);
+
+    });
+
+
+    // Close menu after clicking a navigation link
+
+    const navItems = document.querySelectorAll(".nav-links a");
+
+    navItems.forEach(function (link) {
+
+        link.addEventListener("click", function () {
+
+            navLinks.classList.remove("active");
+            menuToggle.setAttribute("aria-expanded", "false");
+
+        });
+
+    });
+
+
+    // ACTIVITY 8 - Team Filter
+
+    const teamFilter = document.getElementById("teamFilter");
+    const matchCards = document.querySelectorAll(".match-card");
+
+    teamFilter.addEventListener("change", function () {
+
+        const selectedTeam = teamFilter.value;
+
+        matchCards.forEach(function (card) {
+
+            const teams = card.getAttribute("data-teams").split(" ");
+
+            if (selectedTeam === "all" || teams.includes(selectedTeam)) {
+                card.style.display = "";
+            } else {
+                card.style.display = "none";
+            }
+
+        });
+
+    });
+
+
+    // ACTIVITY 8 - Grid and List View
+
+    const matchContainer = document.getElementById("matchContainer");
+
+    const gridBtn = document.getElementById("gridBtn");
+    const listBtn = document.getElementById("listBtn");
+
+    gridBtn.addEventListener("click", function () {
+
+        matchContainer.classList.remove("list-view");
+
+        showToast("Grid View Enabled");
+
+    });
+
+    listBtn.addEventListener("click", function () {
+
+        matchContainer.classList.add("list-view");
+
+        showToast("List View Enabled");
+
+    });
+
+
+    // Existing Booking Summary Functionality
+
     const matchSelect = document.getElementById("match");
-    const categorySelect = document.querySelector("#category");
+    const categorySelect = document.getElementById("category");
     const quantityInput = document.getElementById("quantity");
 
-
-    // Select Booking Summary elements
     const summaryMatch = document.getElementById("summaryMatch");
     const summaryCategory = document.getElementById("summaryCategory");
     const summaryQuantity = document.getElementById("summaryQuantity");
@@ -60,7 +139,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const summaryMessage = document.getElementById("summaryMessage");
 
 
-    // Ticket prices for each stand category
+    // Ticket Prices
+
     const ticketPrices = {
         General: 800,
         Premium: 1500,
@@ -68,15 +148,14 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
 
-    // Function to update Booking Summary
+    // Update Booking Summary
+
     function updateBookingSummary() {
 
         const selectedMatch = matchSelect.value;
         const selectedCategory = categorySelect.value;
         const quantity = Number(quantityInput.value);
 
-
-        // Check whether all selections are valid
         if (
             selectedMatch === "" ||
             selectedCategory === "" ||
@@ -88,18 +167,16 @@ document.addEventListener("DOMContentLoaded", function () {
             summaryMessage.textContent =
                 "Please select a match, stand category and valid quantity.";
 
-            return;
+            return false;
         }
 
-
-        // Calculate ticket price and total price
         const price = ticketPrices[selectedCategory];
         const total = price * quantity;
 
-
-        // Display selected details
         summaryMatch.textContent = selectedMatch;
+
         summaryCategory.textContent = selectedCategory;
+
         summaryQuantity.textContent = quantity + " Tickets";
 
         summaryPrice.textContent =
@@ -108,39 +185,40 @@ document.addEventListener("DOMContentLoaded", function () {
         totalPrice.textContent =
             "₹" + total.toLocaleString("en-IN");
 
-
         summaryMessage.textContent =
             "Your booking summary has been updated successfully!";
 
-
-        // Display toast notification
-        showToast("Booking Summary Updated Successfully!");
+        return true;
     }
 
 
-    // Add change event listeners
+    // Change Event Listeners
+
     matchSelect.addEventListener("change", updateBookingSummary);
 
     categorySelect.addEventListener("change", updateBookingSummary);
 
-    quantityInput.addEventListener("change", updateBookingSummary);
-
-
-    // Also update immediately while typing quantity
     quantityInput.addEventListener("input", updateBookingSummary);
 
 
-    // Handle form submission
+    // Form Submission
+
     const bookingForm = document.getElementById("bookingForm");
 
     bookingForm.addEventListener("submit", function (event) {
 
         event.preventDefault();
 
-        updateBookingSummary();
-
         if (bookingForm.checkValidity()) {
-            showToast("Booking Details Submitted Successfully!");
+
+            if (updateBookingSummary()) {
+                showToast("Booking Details Submitted Successfully!");
+            }
+
+        } else {
+
+            bookingForm.reportValidity();
+
         }
 
     });
